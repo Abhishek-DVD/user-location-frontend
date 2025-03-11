@@ -30,7 +30,7 @@ const Navbar = () => {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           {user?.isAdmin && <li><Link to="/admin/dashboard">Dashboard</Link></li>}
-          <li><a onClick={handleLogout}>Logout</a></li>
+          {user && <li><a onClick={handleLogout}>Logout</a></li>}
         </ul>
       </div>
     </div>
