@@ -39,7 +39,7 @@ const Login = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res?.data?.data));
-      navigate("/profile");
+      navigate("/");
     } catch (error) {
       setError(error?.response?.data || "Something went wrong!!");
     }
