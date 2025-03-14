@@ -23,7 +23,7 @@ const LocationTracker = () => {
           const { latitude, longitude, accuracy, speed } = position.coords;
 
           try {
-            const res = await axios.post(
+            const res = await axios.put(
               `${BASE_URL}/location/update`,
               { latitude, longitude, accuracy, speed },
               { withCredentials: true }

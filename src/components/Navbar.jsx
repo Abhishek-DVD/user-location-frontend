@@ -9,13 +9,13 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-   const handleLogout = async () => {
+   const handleLogout = async (id) => {
      try{
-       await axios.post(BASE_URL+"/logout",{},{
+       await axios.post(BASE_URL+`/logout?id=${id}`,{},{
         withCredentials:true,
        });
        dispatch(removeUser());
-       return navigate("/login");
+       return window.location.pathname.startsWith("/admin") ? navigate("/admin/login") : navigate("/login");
      }catch(err){
        console.log(err);
      }
@@ -30,7 +30,7 @@ const Navbar = () => {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           {user?.isAdmin && <li><Link to="/admin/dashboard">Dashboard</Link></li>}
-          {user && <li><a onClick={handleLogout}>Logout</a></li>}
+          {user && <li><a onClick={() => handleLogout(user._id)}>Logout</a></li>}
         </ul>
       </div>
     </div>

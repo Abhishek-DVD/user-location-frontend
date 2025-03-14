@@ -44,6 +44,7 @@ const AdminDashboard = () => {
               <tr className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 uppercase text-sm leading-normal">
                 <th className="py-3 px-6 text-left">Name</th>
                 <th className="py-3 px-6 text-left">Email</th>
+                <th className="py-3 px-6 text-center">Status</th>
                 <th className="py-3 px-6 text-center">Actions</th>
               </tr>
             </thead>
@@ -67,6 +68,19 @@ const AdminDashboard = () => {
                     </td>
                     <td className="py-3 px-6 text-left whitespace-nowrap">
                       <span>{user.emailId}</span>
+                    </td>
+                    <td className="py-3 px-6 text-center">
+                      {user.isOnline ? (
+                        <div className="flex items-center justify-center">
+                          <span className="h-3 w-3 rounded-full bg-green-500 mr-2"></span>
+                          <span className="text-green-500 text-xs">Online</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center">
+                          <span className="h-3 w-3 rounded-full bg-red-500 mr-2"></span>
+                          <span className="text-red-500 text-xs">Offline</span>
+                        </div>
+                      )}
                     </td>
                     <td className="py-3 px-6 text-center">
                       <button
