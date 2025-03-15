@@ -2,17 +2,46 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
+import createSocketConnection from "../utils/socket";
+import { Country } from "country-state-city";
+
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  const [socket,setSocket] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(Country.getAllCountries());
     fetchUsers(currentPage);
   }, [currentPage]);
+
+  useEffect(()=>{
+     const newSocket = createSocketConnection();
+     setSocket(newSocket);
+     newSocket.on("userStatusUpdate",(data)=>{
+      console.log("Real time status update",data);
+      setUsers((prevUsers) => {
+        if (!prevUsers || prevUsers.length === 0) {
+          // console.warn("No users to update", prevUsers);
+          return prevUsers;
+        }
+      
+        const updatedUsers = prevUsers.map((user) =>
+          user._id === data.userId
+            ? { ...user, isOnline: data.isOnline }
+            : user
+        );
+      
+        console.log("Updated users: ", updatedUsers);
+      
+        return updatedUsers;
+      });
+     }) 
+
+  },[]);
 
   const fetchUsers = async (page) => {
     try {
@@ -49,7 +78,7 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 dark:text-gray-300 text-sm font-light">
-              {users.length === 0 ? (
+              {users.length===0 ? (
                 <tr>
                   <td colSpan="3" className="text-center py-6">
                     No users found.
